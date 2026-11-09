@@ -37,7 +37,7 @@ The initial GitHub upload contains a bundled HTML build. The original modular de
 
 Future work includes gameplay improvements, realistic 3D asset integration, performance optimization, and project documentation.
 
-## Project Goal
+Project Goal
 
 To explore accessible, browser-based 3D game development and progressively build a reusable example of interactive open-world gameplay.
 
