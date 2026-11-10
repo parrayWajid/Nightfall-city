@@ -6,7 +6,6 @@ Nightfall City is a browser-based 3D game prototype inspired by the freedom and 
 
 The project has been under development for approximately two months using OpenAI Codex and was recently published on GitHub.
 
-
 ## Project Features
 
 The current prototype includes systems and interfaces for world exploration, district selection, vehicles, NPC interactions, missions, an in-game economy, vehicle trading, camera controls, and locally saved gameplay progress.
