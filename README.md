@@ -14,7 +14,7 @@ The current prototype includes systems and interfaces for world exploration, dis
 
 The published browser build uses HTML, CSS, JavaScript, and Three.js/WebGL.
 
-## How to Run
+## How to Run 
 
 1. Download or clone this repository.
 2. Place the downloaded files together in a folder.
