@@ -1,0 +1,64 @@
+# Harbor District external-asset test
+
+This is an asset-pipeline and one-street experiment in the existing Three.js game. It is not a completed realistic open world.
+
+## Imported files and provenance
+
+| Asset | Source and declared license | Local files | Use |
+| --- | --- | --- | --- |
+| Rigged camper | [vibeassets](https://vibeassets.io/a/zpepqtthci), listed CC0; site describes it as AI generated | `assets/models/harbor_camper/harbor_camper.glb` (3,062,188 bytes) | Harbor default Ari walking/running appearance |
+| Spectral GT RS | [JaronKBragg7337 repository](https://github.com/JaronKBragg7337/spectral-gt-rs), [CC0 license](https://github.com/JaronKBragg7337/spectral-gt-rs/blob/main/LICENSE) | `assets/models/spectral_gt_rs/spectral_gt_rs.glb` (4,688,844 bytes) | First Harbor parked car, driving and door clips |
+| Modular Urban Apartments Facade | [Poly Haven](https://polyhaven.com/a/modular_urban_apartments_facade), [CC0 license](https://polyhaven.com/license) | `assets/models/modular_urban_apartments_facade/` (1K glTF, binary and 12 PBR JPEGs; about 16.5 MB) | Five-tile front facade and movable door on the enterable Harbor home |
+| Street Lamp 01 | [Poly Haven](https://polyhaven.com/a/street_lamp_01), CC0 | `assets/models/street_lamp_01/` (1K glTF and maps; 2,166,163 bytes) | Harbor street prop |
+| Modular Street Seating | [Poly Haven](https://polyhaven.com/a/modular_street_seating), CC0 | `assets/models/modular_street_seating/` (1K glTF and maps; 7,617,972 bytes) | Harbor street prop |
+| Asphalt 03 | [Poly Haven](https://polyhaven.com/a/asphalt_03), CC0 | `assets/textures/asphalt_03/` (1K diffuse, normal and roughness maps; 2,353,621 bytes) | Harbor road material |
+| Oak street tree, light canopy | [Innerscene](https://www.innerscene.com/tools/library/3d-parts/oak-street-tree-light-canopy-a469b6df), listed CC0 | `assets/models/oak_light/oak_light.glb` (338,332 bytes) | Nearby Harbor street trees |
+| Oak street tree, detailed leaves | [Innerscene](https://www.innerscene.com/tools/library/3d-parts/oak-street-tree-detailed-leaves-a273fef9), listed CC0 | `assets/models/oak_detailed/oak_detailed.glb` (6,184,284 bytes) | A few prominent Harbor street trees |
+| City car | [3DAssets](https://3dassets.dev/assets/car-park-and-road-vehicle-fleet-city-car-033e3215), listed CC0 | `assets/models/city_car/city_car.glb` (1,022,376 bytes) | One Harbor traffic car |
+| Four-door saloon | [3DAssets](https://3dassets.dev/assets/car-park-and-road-vehicle-fleet-saloon-ad831b1f), listed CC0 | `assets/models/saloon/saloon.glb` (955,288 bytes) | One parked car and one Harbor traffic car |
+| Road sportbike | [3DAssets](https://3dassets.dev/assets/motorcycle-racing-and-street-bikes-road-sportbike-e1418015), listed CC0 | `assets/models/road_sportbike/road_sportbike.glb` (260,764 bytes) | Two parked, rideable Harbor bikes |
+| Seagull on mooring post | [3DAssets](https://3dassets.dev/assets/amusement-arcade-and-seaside-pier-seagull-on-post-ff283d63), listed CC0 | `assets/models/seagull_on_post/seagull_on_post.glb` (25,704 bytes) | Six static Harbor dock birds |
+
+The Poly Haven files were downloaded from its API manifest and verified against its listed MD5 checksums at download time. The two GLB sources are credited above; their public license claims should be independently reviewed before commercial publication.
+
+## Integration
+
+`src/asset-loader.js` loads external glTF/GLB models, caches source loads, reports progress, clones instances, and returns `null` on error. `src/main.js` installs the Harbor player and car while preserving the existing player and car roots, movement, camera, interaction, collision, and mission data. It adds the facade to the existing home, so its door pivot, collider, and rooms continue to function. `scripts/build-static.mjs` copies the external model and texture files to `dist/assets/` for the web build.
+
+The camper has Walk and Run clips but lacks compatible aiming, swimming, sitting, sleeping, driving, and outfit variants. Those actions and nondefault customizations show the original procedural character. The sports car is about 152,000 triangles and 258 meshes, which is expensive for a mobile browser; only one Harbor car uses it. The facade is a modular kit placed on the front of the existing house; the rest of that house and its interior remain procedural.
+
+The current facade pass schedules imported modular front panels for every Harbor apartment and the special police, shop, restaurant, and robbery buildings at medium graphics and above. Nearby panels are rendered through instanced meshes as the player moves, and the imported plaster maps cover the apartments' remaining walls. The Harbor home retains its separate imported front and working door. Special building sides, interiors, market stalls, and Pine Ridge buildings still use generated geometry. Twenty nearby trees at medium quality use imported oak meshes, with the detailed model limited to two trees; the rest use the lighter oak. The detailed oak's many leaf meshes are merged by material before placement to control draw calls. Three additional Harbor cars and two bikes use imported model shells while retaining existing vehicle roots, handling, collisions, and enter/exit logic. The menu shows the imported camper in an idle walking pose for the default Ari outfit; alternative characters and clothes still use the procedural preview.
+
+The current pass adds six more imported parked cars and four more imported traffic cars in the expanded Harbor blocks, six static dock seagulls, and selected imported trees, vehicles, the default character, and asphalt maps to Pine Ridge. Flying birds, most NPCs, most buildings, and many distant trees remain procedural. The seagull model is static and has no flight animation.
+
+The Harbor Motors lot reuses the licensed city car, saloon, and Spectral GT RS files listed above. The market stalls, merchandise, and sellers are generated from the existing game geometry and character system; no new shop or seller model was imported in this pass. Vehicle ownership and bargaining are gameplay systems, not evidence of higher visual fidelity.
+
+## Harbor Motors dealership expansion — 2026-11-04
+
+The expanded dealership imports the [Road Car Showroom Lineup](https://3dassets.dev/packs/road-car-showroom-lineup) from 3DAssets.dev. The pack declares CC0 1.0 Universal. The downloaded GLBs and per-file provenance are in `assets/models/showroom/manifest.json`. The game uses 19 distinct car models across 33 listings and 8 showroom/forecourt fixture models. Files are bundled into `dist/assets/models/showroom/` by `scripts/build-static.mjs`. Several listings share the same model with different colors, specifications, and prices; they are not 33 unique car models.
+
+The site architecture, sliding glass doors, parking lot, signs, price stands, personal garage pad, and all 33 salesperson figures are built with Three.js geometry and the existing character generator. They are functional gameplay components, but do not match the photorealistic detail of the supplied concept images. Seller speech uses browser speech synthesis when enabled, and persistent ownership uses localStorage in this browser. There is no account sync, backend economy, true indoor parking system, or licensed real-world car brand. The imported vehicle shells sit on existing driving roots to preserve controls and collision; they are not fully simulated mechanical vehicles.
+
+The new campus is 288 × 256 game metres (73,728 square metres). It contains one enterable main showroom, a separate enterable VIP hall, a 25-car outdoor sale lot, four cars in each indoor hall, a visitor parking section, service/delivery facade, and a personal delivery pad. Five repeatable contract offers across Harbor and Pine Ridge fund purchases. The showroom building and service facade still need professional architectural models, PBR surface maps, richer interior design, and measured phone performance to approach the reference images.
+
+## Dealership vehicle and surface pass — 2026-11-06
+
+Fifteen distinct vehicle GLBs from the [Car Park and Road Vehicle Fleet](https://3dassets.dev/packs/car-park-and-road-vehicle-fleet) replace the nearby low-detail dealership car shells at medium graphics and above. This source declares CC0 1.0 Universal and identifies the models as AI-generated. The exact asset IDs, source pages, and byte sizes are recorded in `assets/models/dealer_fleet/manifest.json`. The models are reused across 33 listings; distant cars retain the lighter shells for performance. All cars retain their original driving roots and ownership data. The models have richer geometry and materials, but no photographic PBR texture maps and do not meet GTA 6 fidelity.
+
+The showroom floors use the diffuse, OpenGL normal, and roughness maps from [Poly Haven Marble 01](https://polyhaven.com/a/marble_01), declared [CC0](https://polyhaven.com/license). The three 1K JPEGs in `assets/textures/marble_01/` were verified against the source API MD5 checksums: diffuse `04325ced5018eb8a2e598a4ef69cb176`, normal `fa073d722cde733c1bd6cc6e8897c8e3`, roughness `59cef1be1b7376c9d0dcc7a64adf7882`. The outdoor lot reuses the existing Asphalt 03 maps. The showroom architecture and salesperson characters are still generated geometry. Vehicle price signs now face both approaches, and indoor cars rest on display plinths.
+
+High-priced listings already specified 150+ km/h. Their driving drag now permits reaching the advertised speed on a sufficiently long open road; the speed caps and acceleration remain arcade handling rather than a realistic vehicle simulation. A browser QA lane run reached about 200 km/h in the 350 km/h Spectral One without damage. This exposed and fixed a dealership car transfer bug: `Object3D.attach()` changed the car's Euler yaw representation when entering it, so the driving code moved in the opposite direction. Reparenting with `add()` preserves this game's identity-transform coordinates and driving yaw. Actual phone frame rates remain unmeasured.
+
+## Verification and limits
+
+`npm run build` and `npm run smoke` pass after the second asset pass. The local `dist/` preview loaded all ten Harbor asset tasks without fallback. In browser testing the detailed car could be entered with E and driven forward with W; its speedometer reached 65 km/h. The imported default character in the menu was checked after fixing its T-pose. The menu scrolled at a 390 × 844 viewport and kept Play available. Browser logs showed one generic Chromium `UnknownError` with no app-specific stack trace; its cause remains unverified. Mobile frame rate, actual phone input, door collision from both sides, and same-camera before/after screenshots have not been measured yet. The broader world and other maps are not visually replaced.
+
+On this Mac, macOS previously offloaded some downloaded asset files (`compressed,dataless`), which made the preview server time out. The files were redownloaded through `/private/tmp`, checksum-verified, copied into `assets/`, and included in `dist/assets/`. Verify that the files have physical bytes before publishing; a successful local build by itself does not guarantee that cloud storage has not offloaded them again.
+
+On 2026-11-03 the same offloading recurred with only about 2 GB of disk space available. The source files were restored from the physical `/private/tmp` copies and `scripts/build-static.mjs` was changed to copy via temporary files and atomic renames. The external asset bytes for the temporary Site are assembled from the physical `/private/tmp` copies to avoid publishing cloud placeholders.
+
+## In-game burgundy phone — 2026-11-07
+
+The user supplied a front/back image reference. [Apple's iPhone 18 Pro page](https://www.apple.com/iphone-18-pro/) confirms the Burgundy finish and smaller Dynamic Island. `src/phone.js` currently builds an original, lightweight fallback prop with rounded metal body, dark front glass, camera island, three lenses, flash, and side button. The interactive phone screen is HTML/CSS in `index.template.html` and `src/style.css`. It is not an imported Apple model or an exact product reproduction.
+
+A [Sketchfab Burgundy iPhone 18 Pro model](https://sketchfab.com/3d-models/apple-iphone-18-pro-burgundy-2026-15c2b8a3f9eb439e82ab706debc076bd) is listed as downloadable under its Free Standard license at about 70.7k triangles, but the actual download and embedded textures were not obtained or verified, so it is **not** in the game. A separate [ArtStation GLB](https://www.artstation.com/marketplace/p/aKdPD/apple-iphone-18-pro-burgundy) is listed at 88 MB and requires purchase; it was not purchased. When the user supplies a licensed GLB, inspect its geometry, materials, orientation, size, and mobile cost before replacing the fallback prop.
