@@ -4,7 +4,6 @@ This is an asset-pipeline and one-street experiment in the existing Three.js gam
 
 ## Imported files and provenance 
 
-
 | Asset | Source and declared license | Local files | Use |
 | --- | --- | --- | --- |
 | Rigged camper | [vibeassets](https://vibeassets.io/a/zpepqtthci), listed CC0; site describes it as AI generated | `assets/models/harbor_camper/harbor_camper.glb` (3,062,188 bytes) | Harbor default Ari walking/running appearance |
